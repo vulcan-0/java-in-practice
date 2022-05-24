@@ -1,6 +1,10 @@
 package org.vulcan.light.javainpractice.concurrent;
 
+import org.vulcan.light.javainpractice.util.ThreadUtil;
+
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Sam Lu
@@ -8,24 +12,28 @@ import java.util.concurrent.CountDownLatch;
  */
 public class CountDownLatchTest {
 
-    static int count;
+    static AtomicInteger count = new AtomicInteger();
 
     public static void main(String[] args) throws InterruptedException {
-        for (int i = 0; i < 20; i++) {
+        int n = 20;
+        for (int i = 0; i < n; i++) {
             testCountDownLatch();
         }
     }
 
     private static void testCountDownLatch() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(5);
-        for (int i = 0; i < 100; i++) {
-            new Thread(() -> {
-                count++;
+        ExecutorService executorService = ThreadUtil.newFixedThreadPool(10);
+        int n = 100;
+        CountDownLatch countDownLatch = new CountDownLatch(n);
+        for (int i = 0; i < n; i++) {
+            executorService.execute(() -> {
+                count.incrementAndGet();
                 countDownLatch.countDown();
-            }).start();
+            });
         }
         countDownLatch.await();
-        System.out.println(count);
+        System.out.println(count.get());
+        executorService.shutdown();
     }
 
 }

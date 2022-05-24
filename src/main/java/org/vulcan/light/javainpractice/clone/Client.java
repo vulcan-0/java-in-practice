@@ -18,8 +18,8 @@ public class Client {
      * JDK默认的clone方法为浅拷贝
      * </li>
      *
-     * @param args
-     * @throws CloneNotSupportedException
+     * @param args 入参
+     * @throws CloneNotSupportedException 不支持clone操作
      */
     public static void main(String[] args) throws CloneNotSupportedException {
         Super sup = new Super();

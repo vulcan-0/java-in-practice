@@ -1,7 +1,10 @@
 package org.vulcan.light.javainpractice.concurrent;
 
+import org.vulcan.light.javainpractice.util.ThreadUtil;
+
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author Sam Lu
@@ -22,21 +25,25 @@ public class CyclicBarrierTest {
         RunnableTask runnableTask3 = new RunnableTask(cyclicBarrier, 3000);
 
         // Create and start 3 threads
-        new Thread(runnableTask1, "Thread-1").start();
-        new Thread(runnableTask2, "Thread-2").start();
-        new Thread(runnableTask3, "Thread-3").start();
+        ExecutorService executorService = ThreadUtil.newFixedThreadPool(3);
+        executorService.execute(runnableTask1);
+        executorService.execute(runnableTask2);
+        executorService.execute(runnableTask3);
+        executorService.shutdown();
 
         /*
          * We are reusing cyclic barrier using below threads
          * */
+        executorService = ThreadUtil.newFixedThreadPool(3);
         RunnableTask runnableTask4 = new RunnableTask(cyclicBarrier, 4000);
         RunnableTask runnableTask5 = new RunnableTask(cyclicBarrier, 5000);
         RunnableTask runnableTask6 = new RunnableTask(cyclicBarrier, 6000);
 
         // Create and start 3 more threads
-        new Thread(runnableTask4, "Thread-4").start();
-        new Thread(runnableTask5, "Thread-5").start();
-        new Thread(runnableTask6, "Thread-6").start();
+        executorService.execute(runnableTask4);
+        executorService.execute(runnableTask5);
+        executorService.execute(runnableTask6);
+        executorService.shutdown();
     }
 
     static class RunnableTask implements Runnable {
@@ -62,9 +69,7 @@ public class CyclicBarrierTest {
                  * CyclicBarrierEvent will be triggered and all waiting threads will be released.
                  */
                 cyclicBarrier.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (BrokenBarrierException e) {
+            } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }
 

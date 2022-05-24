@@ -19,7 +19,7 @@ public class WaitAndNotifyTest {
 
     static class MyThread extends Thread {
 
-        private WaitAndNotifyTest test;
+        private final WaitAndNotifyTest test;
 
         public MyThread(WaitAndNotifyTest test) {
             this.test = test;

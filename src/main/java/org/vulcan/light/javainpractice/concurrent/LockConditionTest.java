@@ -10,19 +10,19 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class LockConditionTest {
 
-    private static Lock lock = new ReentrantLock();
-    private static Condition condition = lock.newCondition();
+    private static final Lock LOCK = new ReentrantLock();
+    private static final Condition CONDITION = LOCK.newCondition();
 
     public static void main(String[] args) throws InterruptedException {
-        new MyThread(condition).start();
+        new MyThread(CONDITION).start();
 
-        lock.lock();
+        LOCK.lock();
         try {
             System.out.println("test await");
-            condition.await();
+            CONDITION.await();
             System.out.println("test wake up");
         } finally {
-            lock.unlock();
+            LOCK.unlock();
         }
     }
 
@@ -43,11 +43,11 @@ public class LockConditionTest {
             }
 
             System.out.println("test signal");
-            lock.lock();
+            LOCK.lock();
             try {
                 condition.signal();
             } finally {
-                lock.unlock();
+                LOCK.unlock();
             }
             System.out.println("test signal finish");
         }

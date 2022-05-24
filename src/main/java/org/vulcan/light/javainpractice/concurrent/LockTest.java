@@ -1,6 +1,9 @@
 package org.vulcan.light.javainpractice.concurrent;
 
+import org.vulcan.light.javainpractice.util.ThreadUtil;
+
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.locks.*;
 
 /**
@@ -9,12 +12,12 @@ import java.util.concurrent.locks.*;
  */
 public class LockTest {
 
-    private ReentrantLock reentrantLock = new ReentrantLock();
-    private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private StampedLock stampedLock = new StampedLock();
+    private final ReentrantLock reentrantLock = new ReentrantLock();
+    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private final StampedLock stampedLock = new StampedLock();
+    private final int[] count2 = new int[10];
+    private final int[] count3 = new int[10];
     private int count1;
-    private int[] count2 = new int[10];
-    private int[] count3 = new int[10];
 
     public static void main(String[] args) {
         LockTest test = new LockTest();
@@ -22,34 +25,40 @@ public class LockTest {
         int times = 100;
 
         long time1 = System.currentTimeMillis();
+        ExecutorService executorService1 = ThreadUtil.newFixedThreadPool(10);
         for (int i = 0; i < times; i++) {
-            new Thread(() -> {
+            executorService1.execute(() -> {
                 test.inc1();
                 if (test.count1 == times) {
                     System.out.println("count1 inc finish, use time: " + (System.currentTimeMillis() - time1) + "ms");
                 }
-            }).start();
+            });
         }
+        executorService1.shutdown();
 
         long time2 = System.currentTimeMillis();
+        ExecutorService executorService2 = ThreadUtil.newFixedThreadPool(10);
         for (int i = 0; i < times; i++) {
-            new Thread(() -> {
+            executorService2.execute(() -> {
                 test.inc2(random.nextInt(10));
                 if (test.get2() == times) {
                     System.out.println("count2 inc finish, use time: " + (System.currentTimeMillis() - time2) + "ms");
                 }
-            }).start();
+            });
         }
+        executorService2.shutdown();
 
         long time3 = System.currentTimeMillis();
+        ExecutorService executorService3 = ThreadUtil.newFixedThreadPool(10);
         for (int i = 0; i < times; i++) {
-            new Thread(() -> {
+            executorService3.execute(() -> {
                 test.inc3(random.nextInt(10));
                 if (test.get3() == times) {
                     System.out.println("count3 inc finish, use time: " + (System.currentTimeMillis() - time3) + "ms");
                 }
-            }).start();
+            });
         }
+        executorService3.shutdown();
     }
 
     public void inc1() {
@@ -80,8 +89,8 @@ public class LockTest {
         readLock.lock();
         try {
             int count = 0;
-            for (int i = 0; i < count2.length; i++) {
-                count += count2[i];
+            for (int i : count2) {
+                count += i;
             }
             return count;
         } finally {
@@ -104,8 +113,8 @@ public class LockTest {
         long stamp = stampedLock.tryOptimisticRead();
 
         int count = 0;
-        for (int i = 0; i < count3.length; i++) {
-            count += count3[i];
+        for (int i : count3) {
+            count += i;
         }
         if (stampedLock.validate(stamp)) {
             return count;
@@ -114,8 +123,8 @@ public class LockTest {
         stamp = stampedLock.readLock();
         try {
             count = 0;
-            for (int i = 0; i < count3.length; i++) {
-                count += count3[i];
+            for (int i : count3) {
+                count += i;
             }
             return count;
         } finally {
