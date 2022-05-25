@@ -6,22 +6,23 @@ package org.vulcan.light.javainpractice.concurrent;
  */
 public class WaitAndNotifyTest {
 
-    public static void main(String[] args) throws InterruptedException {
-        WaitAndNotifyTest test = new WaitAndNotifyTest();
-        new MyThread(test).start();
+    private static final Object TEST = new Object();
 
-        synchronized (test) {
+    public static void main(String[] args) throws InterruptedException {
+        new MyThread(TEST).start();
+
+        synchronized (TEST) {
             System.out.println("test wait");
-            test.wait();
+            TEST.wait();
             System.out.println("test wake up");
         }
     }
 
     static class MyThread extends Thread {
 
-        private final WaitAndNotifyTest test;
+        private final Object test;
 
-        public MyThread(WaitAndNotifyTest test) {
+        public MyThread(Object test) {
             this.test = test;
         }
 

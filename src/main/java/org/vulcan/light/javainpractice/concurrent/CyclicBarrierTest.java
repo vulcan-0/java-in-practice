@@ -33,7 +33,7 @@ public class CyclicBarrierTest {
 
         /*
          * We are reusing cyclic barrier using below threads
-         * */
+         */
         executorService = ThreadUtil.newFixedThreadPool(3);
         RunnableTask runnableTask4 = new RunnableTask(cyclicBarrier, 4000);
         RunnableTask runnableTask5 = new RunnableTask(cyclicBarrier, 5000);
