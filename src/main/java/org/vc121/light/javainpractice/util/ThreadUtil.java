@@ -1,4 +1,4 @@
-package org.vulcan.light.javainpractice.util;
+package org.vc121.light.javainpractice.util;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 

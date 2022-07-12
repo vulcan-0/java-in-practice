@@ -1,4 +1,4 @@
-package org.vulcan.light.javainpractice.clone;
+package org.vc121.light.javainpractice.clone;
 
 /**
  * @author Sam Lu
@@ -9,10 +9,10 @@ public class Client {
     /**
      * <li>
      * Super必须实现Cloneable，否则会抛出CloneNotSupportedException异常：<br>
-     * Exception in thread "main" java.lang.CloneNotSupportedException: org.vulcan.light.javainpractice.clone.Super<br>
+     * Exception in thread "main" java.lang.CloneNotSupportedException: org.vc121.light.javainpractice.clone.Super<br>
      * at java.lang.Object.clone(Native Method)<br>
-     * at org.vulcan.light.javainpractice.clone.Super.clone(Super.java:21)<br>
-     * at org.vulcan.light.javainpractice.clone.Client.main(Client.java:16)
+     * at org.vc121.light.javainpractice.clone.Super.clone(Super.java:21)<br>
+     * at org.vc121.light.javainpractice.clone.Client.main(Client.java:16)
      * </li>
      * <li>
      * JDK默认的clone方法为浅拷贝

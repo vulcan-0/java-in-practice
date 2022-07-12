@@ -1,4 +1,4 @@
-package org.vulcan.light.javainpractice.clone;
+package org.vc121.light.javainpractice.clone;
 
 /**
  * @author Sam Lu

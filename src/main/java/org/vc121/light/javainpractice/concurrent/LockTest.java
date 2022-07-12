@@ -1,6 +1,6 @@
-package org.vulcan.light.javainpractice.concurrent;
+package org.vc121.light.javainpractice.concurrent;
 
-import org.vulcan.light.javainpractice.util.ThreadUtil;
+import org.vc121.light.javainpractice.util.ThreadUtil;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;

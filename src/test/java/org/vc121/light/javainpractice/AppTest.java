@@ -1,4 +1,4 @@
-package org.vulcan.light.javainpractice;
+package org.vc121.light.javainpractice;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
